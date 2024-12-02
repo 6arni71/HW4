@@ -7,20 +7,16 @@ router = APIRouter(tags=["Get pages"])
 def GetNew():
     try:
         def GetTenNewVulnerabilities():
-            try:
-                cveJsonDump = LoadCvesFile()
+            cveJsonDump = LoadCvesFile()
 
-                filtredVulns = []
+            filtredVulns = []
 
-                for vulnerability in cveJsonDump['vulnerabilities']:
-                    filtredVulns.append(vulnerability)
-                    if len(filtredVulns) >= 10:
-                        break
+            for vulnerability in cveJsonDump['vulnerabilities']:
+                filtredVulns.append(vulnerability)
+                if len(filtredVulns) >= 10:
+                    break
 
-                return filtredVulns
-            
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error processing file: {e}")
+            return filtredVulns
         
         result = GetTenNewVulnerabilities()
 

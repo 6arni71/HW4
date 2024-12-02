@@ -8,26 +8,23 @@ router = APIRouter(tags=["Get pages"])
 def GetAll(daysCount: int = Query(5, ge=1, le=365)):
     try:
         def GetAllCveLastFiveDays():
-            try:
-                cveJsonDump = LoadCvesFile()
 
-                dateFiveDaysAgo = datetime.date.today() - datetime.timedelta(days=daysCount)
+            cveJsonDump = LoadCvesFile()
 
-                filtredVulns = []
+            dateFiveDaysAgo = datetime.date.today() - datetime.timedelta(days=daysCount)
 
-                for vulnerability in cveJsonDump['vulnerabilities']:
-                    if 'dateAdded' in vulnerability:
-                        dateAdded = datetime.datetime.strptime(vulnerability['dateAdded'], "%Y-%m-%d").date()
-                        if dateAdded >= dateFiveDaysAgo:
-                            filtredVulns.append(vulnerability)
-                            if len(filtredVulns) > 40:
-                                break
+            filtredVulns = []
+
+            for vulnerability in cveJsonDump['vulnerabilities']:
+                if 'dateAdded' in vulnerability:
+                    dateAdded = datetime.datetime.strptime(vulnerability['dateAdded'], "%Y-%m-%d").date()
+                    if dateAdded >= dateFiveDaysAgo:
+                        filtredVulns.append(vulnerability)
+                        if len(filtredVulns) > 40:
+                            break
 
                 return filtredVulns
             
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error processing file: {e}")
-        
         result = GetAllCveLastFiveDays()
 
         if not result:

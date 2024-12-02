@@ -7,16 +7,13 @@ router = APIRouter(tags=["Get pages"])
 def GetQuery(query: str = Query(..., min_length=1)):
     try:
         def GetVulnsByKeywords():
-            try:
-                cveJsonDump = LoadCvesFile()
 
-                filtredVulns = [vuln for vuln in cveJsonDump['vulnerabilities'] if query.lower() in str(vuln).lower()]
+            cveJsonDump = LoadCvesFile()
 
-                return filtredVulns
-            
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error processing file: {e}")
-        
+            filtredVulns = [vuln for vuln in cveJsonDump['vulnerabilities'] if query.lower() in str(vuln).lower()]
+
+            return filtredVulns
+
         result = GetVulnsByKeywords()
 
         if not result:
