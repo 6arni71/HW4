@@ -23,7 +23,7 @@ def GetAll(daysCount: int = Query(5, ge=1, le=365)):
                         if len(filtredVulns) > 40:
                             break
 
-                return filtredVulns
+            return filtredVulns
             
         result = GetAllCveLastFiveDays()
 
